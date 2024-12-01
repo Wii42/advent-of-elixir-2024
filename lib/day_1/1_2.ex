@@ -1,6 +1,6 @@
-defmodule AdventOfCode2024.Day1_2 do
+defmodule AdventOfElixir2024.Day1_2 do
   @moduledoc """
-  Documentation for `AdventOfCode2024`.
+  Documentation for `AdventOfElixir2024`.
   """
 
   @doc """
@@ -8,7 +8,7 @@ defmodule AdventOfCode2024.Day1_2 do
 
   ## Examples
 
-      iex> AdventOfCode2024.hello()
+      iex> AdventOfElixir2024.hello()
       :world
 
   """
@@ -28,7 +28,7 @@ defmodule AdventOfCode2024.Day1_2 do
     second_part = for line <- lines, do: get_nth_elem(line, 1)
     first_part = Enum.sort(first_part)
     second_part = Enum.sort(second_part)
-    second_part_freq = Enum.frequencies(second_part) |> IO.inspect()
+    second_part_freq = Enum.frequencies(second_part)
     Enum.reduce(first_part, 0, fn a, acc -> a * Map.get(second_part_freq, a, 0) + acc end)
   end
 
@@ -38,4 +38,4 @@ defmodule AdventOfCode2024.Day1_2 do
   end
 end
 
-AdventOfCode2024.Day1_2.prod()
+AdventOfElixir2024.Day1_2.prod()

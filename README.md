@@ -1,21 +1,18 @@
-# AdventOfCode2024
+# AdventOfElixir2024
 
-**TODO: Add description**
+**Solution to the [Advent of Code 2024](https://adventofcode.com/2024) event written in Elixir.**
 
-## Installation
+No guarantee for correctness or completeness.
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `advent_of_code2024` to your list of dependencies in `mix.exs`:
+To use this with your own input, add the input as a .txt file in the folder of the day in the format ``1_1_test_input.txt`` for the first part of the day 1 exercise, if you want to check against the example input
+or ``1_1_input.txt`` to solve the actual exercise. If the input for part 1 and 2 are identical, save them as ``1_test_input.txt`` or ``1_input.txt`` respectively. 
 
-```elixir
-def deps do
-  [
-    {:advent_of_code2024, "~> 0.1.0"}
-  ]
-end
-```
+For Each part exercise ``test()`` loads the test input and solves it, the same for ``prod()`` for the actual excercise.
 
+Exercise descriptionand inputs are not bundled in the repo, as per instructions by the Advent of Code maintainer
+
+<!---
 Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
 and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
 be found at <https://hexdocs.pm/advent_of_code2024>.
-
+-->
