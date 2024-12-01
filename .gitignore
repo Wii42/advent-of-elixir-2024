@@ -24,3 +24,7 @@ advent_of_code2024-*.tar
 
 # Temporary files, for example, from tests.
 /tmp/
+
+
+#Ignore inputs, so every user can add their own input
+*.txt
