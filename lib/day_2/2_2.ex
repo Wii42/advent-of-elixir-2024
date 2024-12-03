@@ -1,4 +1,4 @@
-defmodule AdventOfElixir2024.Day2_1 do
+defmodule AdventOfElixir2024.Day2_2 do
   def test() do
     {:ok, input} = File.read("2_test_input.txt")
     solution(input) |> IO.inspect()
@@ -88,4 +88,4 @@ defmodule AdventOfElixir2024.Day2_1 do
   defp in_range?(x), do: x >= 1 and x <= 3
 end
 
-AdventOfElixir2024.Day2_1.prod()
+AdventOfElixir2024.Day2_2.prod()
