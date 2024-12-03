@@ -1,17 +1,4 @@
 defmodule AdventOfElixir2024.Day1_2 do
-  @moduledoc """
-  Documentation for `AdventOfElixir2024`.
-  """
-
-  @doc """
-  Hello world.
-
-  ## Examples
-
-      iex> AdventOfElixir2024.hello()
-      :world
-
-  """
   def test() do
     {:ok, input} = File.read("1_test_input.txt")
     solution(input) |> IO.inspect()
