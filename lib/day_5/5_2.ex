@@ -19,10 +19,9 @@ defmodule AdventOfElixir2024.Day5_2 do
       |> Enum.map(fn x ->
         String.split(x, "|") |> Enum.map(&String.to_integer/1) |> List.to_tuple()
       end)
-      |> IO.inspect()
 
-    partial_orders = create_partial_orders(rules) |> IO.inspect(label: "partial odrer")
-    S
+
+
 
     updates =
       Enum.drop(lines, splitter + 1)
@@ -30,9 +29,11 @@ defmodule AdventOfElixir2024.Day5_2 do
 
     invalid_updates =
       Enum.filter(updates, fn update -> not check_update_is_valid(rules, update) end)
-      |> IO.inspect()
 
-    Enum.map(invalid_updates, &middle_elem/1)
+
+    corrected_updates = Enum.map(invalid_updates, fn(update) -> get_applicable_rules(update, rules) |> order_rules() end) |> IO.inspect()
+
+    Enum.map(corrected_updates, &middle_elem/1)
     |> Enum.sum()
   end
 
@@ -54,41 +55,24 @@ defmodule AdventOfElixir2024.Day5_2 do
     Enum.at(list, middle_index)
   end
 
-  defp create_partial_orders(rules), do: create_partial_orders(rules, [])
-  defp create_partial_orders([], orders), do: orders
-
-  defp create_partial_orders([rule | other_rules], []) do
-    create_partial_orders(other_rules, [Tuple.to_list(rule)])
+  defp get_applicable_rules(update, all_rules) do
+    Enum.filter(all_rules, fn {a, b} -> Enum.member?(update, a) and Enum.member?(update, b) end)
   end
 
-  defp create_partial_orders([rule | other_rules], orders) do
-    IO.inspect(orders)
-    {smaller, larger} = rule
+  # Assumtion: Set of all rules is a dense graph, ie every pages realtion is defined to every other page
+  defp order_rules(rules) do
+    order_rules(rules, [])
+  end
 
-    append_start =
-      Enum.filter(orders, fn order -> List.starts_with?(order, [larger]) end)
+  defp order_rules([{a,b}], order), do: [a,b] ++ order
 
-    orders =
-      Enum.reduce(append_start, orders, fn match, acc ->
-        acc = List.delete(acc, match)
-        new_match = [larger | match]
-        [new_match | acc]
-      end)
-
-    append_end =
-      Enum.filter(orders, fn order -> List.starts_with?(Enum.reverse(order), [smaller]) end)
-
-    orders =
-      Enum.reduce(append_start, orders, fn match, acc ->
-        acc = List.delete(acc, match)
-        new_match = match ++ [smaller]
-        [new_match | acc]
-      end)
-
-
-    orders = if Enum.empty?(append_end) and Enum.empty?(append_start) and Enum.any?(orders, ), do: [[smaller, larger] | orders], else: orders
-    create_partial_orders(other_rules, orders)
+  defp order_rules(rules, order) do
+    [from, to] = Enum.zip(Enum.map(rules, &Tuple.to_list/1)) |> Enum.map(&Tuple.to_list/1) |> Enum.map(&Enum.uniq/1)
+    largest = Enum.filter(to, fn(x) ->  not Enum.member?(from, x)end ) |> List.to_tuple()|> elem(0)
+    order = [largest |order]
+    rules = Enum.filter(rules, fn({a,b}) -> largest != a and largest != b end)
+    order_rules(rules, order)
   end
 end
 
-AdventOfElixir2024.Day5_2.test()
+AdventOfElixir2024.Day5_2.prod()
