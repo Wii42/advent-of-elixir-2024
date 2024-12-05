@@ -27,14 +27,10 @@ defmodule AdventOfElixir2024.Day4_2 do
   defp search_in_direction(_, _, _, [], acc), do: acc
 
   defp search_in_direction(matrix, {xpos, ypos}, {xdir, ydir}, look_for, acc) do
-    # IO.inspect("(#{xpos}, #{ypos})")
-
     if not (Map.has_key?(matrix, ypos) and Map.has_key?(matrix[ypos], xpos)) do
-      # IO.puts("outside range (#{xpos}, #{ypos})")
       []
     else
       char_at_pos = matrix[ypos][xpos]
-      # IO.inspect(<<matrix[ypos][xpos]>>)
 
       if char_at_pos == hd(look_for) do
         search_in_direction(matrix, {xpos + xdir, ypos + ydir}, {xdir, ydir}, tl(look_for), [
@@ -61,15 +57,13 @@ defmodule AdventOfElixir2024.Day4_2 do
             acc ++ check_all_directions(matrix, {x, y}, look_for)
           end)
       end)
-    #IO.inspect(found_matches)
+
     find_crosses(found_matches)
   end
 
   defp find_crosses(words) do
     a_pos_list = Enum.map(words, &get_apos/1)
-    #IO.inspect(a_pos_list)
-    Enum.frequencies(a_pos_list) |> Enum.filter(fn({_pos, count}) -> count == 2 end) |> length()
-
+    Enum.frequencies(a_pos_list) |> Enum.filter(fn {_pos, count} -> count == 2 end) |> length()
   end
 
   defp get_apos(word) do
