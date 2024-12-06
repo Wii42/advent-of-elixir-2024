@@ -19,10 +19,17 @@ defmodule AdventOfElixir2024.Day6_2 do
 
     IO.puts(matrix_to_string(matrix))
     pointer = find_pointer(matrix)
-    y_size = map_size(matrix)-1
-    x_size = map_size(matrix[0])-1
-    IO.inspect(x_size*y_size, label: "to check")
-    (for y<- 0..y_size, x <- 0..x_size, {y,x} != pointer, do: add_obstacle(matrix, pointer, {y,x})) |> Enum.count(fn(x) -> x == true end)
+    y_size = map_size(matrix) - 1
+    x_size = map_size(matrix[0]) - 1
+    IO.inspect(x_size * y_size, label: "to check")
+
+    for(
+      y <- 0..y_size,
+      x <- 0..x_size,
+      {y, x} != pointer,
+      do: add_obstacle(matrix, pointer, {y, x})
+    )
+    |> Enum.count(fn x -> x == true end)
   end
 
   defp as_indexed_map(list) do
@@ -76,7 +83,7 @@ defmodule AdventOfElixir2024.Day6_2 do
     if path_symbol in current_value do
       {true, matrix}
     else
-      matrix = put_in(matrix[pointer_y][pointer_x], [path_symbol | current_value])
+      matrix = put_in(matrix[pointer_y][pointer_x], [path_symbol | current_value] |> Enum.uniq())
       new_pointer_x = pointer_x + x_dir
       new_pointer_y = pointer_y + y_dir
       next_value = matrix[new_pointer_y][new_pointer_x]
@@ -85,7 +92,6 @@ defmodule AdventOfElixir2024.Day6_2 do
 
       case next_top_value do
         nil ->
-          matrix_to_string(matrix) #|> IO.puts()
           {false, matrix}
 
         ?# ->
@@ -93,17 +99,15 @@ defmodule AdventOfElixir2024.Day6_2 do
 
         _ ->
           matrix = put_in(matrix[new_pointer_y][new_pointer_x], [?^ | next_value])
-          matrix |> matrix_to_string() #|> IO.puts()
-          #IO.puts("")
           move_pointer(matrix, {new_pointer_y, new_pointer_x}, directions)
       end
     end
   end
 
-  def add_obstacle(matrix, pointer, {y,x}) do
+  def add_obstacle(matrix, pointer, {y, x}) do
     matrix = put_in(matrix[y][x], [?#])
     {has_cicle, _} = move_pointer(matrix, pointer, directions())
-    IO.inspect(has_cicle, label: "#{x}, #{y}")
+    if x == 0, do: IO.inspect(has_cicle, label: "#{x}, #{y}")
     has_cicle
   end
 end
