@@ -43,6 +43,35 @@ defmodule Matrix do
   end
 
   def filter(matrix, fun) do
-    Enum.map(matrix, fn _key, row -> Map.filter(row, fn {_, val} -> fun.(val) end) end)
+    Enum.map(matrix, fn {key, row} ->
+      new_val = Map.filter(row, fn {_, val} -> fun.(val) end)
+      {key, new_val}
+    end)
+    |> Enum.into(%{})
+    |> Map.filter(fn {_key, value} -> not (Map.values(value) |> Enum.empty?()) end)
+  end
+
+  @doc "Converts the matrix in to a map, where distict values in the matrix are keys and the value is alist where this vlaue is found in the matrix"
+  def position_map(matrix) do
+    Enum.map(matrix, fn {key, row} ->
+      values_map(row, key)
+    end)
+    |> Enum.reduce(%{}, fn map, acc ->
+      Map.merge(map, acc, fn _, val1, val2 -> val1 ++ val2 end)
+    end)
+  end
+
+  defp values_map(map, index) do
+    Enum.reduce(map, %{}, fn {k, val}, acc ->
+      list = Map.get(acc, val, [])
+      Map.put(acc, val, [{k, index} | list])
+    end)
+  end
+
+  def map(matrix, fun) do
+    Enum.map(matrix, fn {key1,row} ->
+      {key1, Enum.map(row, fn {key2, value} -> {key2, fun.(value)} end) |> Enum.into(%{})}
+    end)
+    |> Enum.into(%{})
   end
 end
