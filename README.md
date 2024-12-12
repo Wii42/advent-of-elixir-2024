@@ -9,7 +9,9 @@ or ``1_1_input.txt`` to solve the actual exercise. If the input for part 1 and 2
 
 For Each part exercise ``test()`` loads the test input and solves it, the same for ``prod()`` for the actual excercise.
 
-Exercise descriptionand inputs are not bundled in the repo, as per instructions by the Advent of Code maintainer
+Exercise descriptions and inputs are not bundled in the repo, as per instructions by the Advent of Code maintainer
+
+To create a new folder for day x, you can run ``./aoc_gen ``. Replace x with the da you want to create a folder for, for example ``24``. This command automatically creates empty imput files and skeletons for each part.
 
 <!---
 Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
