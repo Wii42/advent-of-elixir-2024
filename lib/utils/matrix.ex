@@ -69,9 +69,22 @@ defmodule Matrix do
   end
 
   def map(matrix, fun) do
-    Enum.map(matrix, fn {key1,row} ->
+    Enum.map(matrix, fn {key1, row} ->
       {key1, Enum.map(row, fn {key2, value} -> {key2, fun.(value)} end) |> Enum.into(%{})}
     end)
     |> Enum.into(%{})
+  end
+
+  def reduce(matrix, acc, fun) do
+    Enum.reduce(matrix, acc, fn {_key1, row}, acc2 ->
+      Enum.reduce(row, acc2, fn {_key2, value}, acc3 -> fun.(value, acc3) end)
+    end)
+  end
+
+  @doc " fun has the parameters (x_coordinate, y_coordinate, acc)"
+  def reduce_by_position(matrix, acc, fun) do
+    Enum.reduce(matrix, acc, fn {key1, row}, acc2 ->
+      Enum.reduce(Map.keys(row), acc2, fn key2, acc3 -> fun.(key2, key1, acc3) end)
+    end)
   end
 end
